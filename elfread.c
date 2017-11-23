@@ -94,6 +94,26 @@ int magicCheck(FILE *f)
 	return 1;
 }
 
+void getProgramHeaders(FILE *f, int size)
+{
+	char *headers;
+	fseek(f, 0, SEEK_SET);
+
+	headers = malloc(size);
+}
+
+void getSectionHeaders(FILE *f, int size)
+{
+	char *headers;
+	fseek(f, 0, SEEK_SET);
+
+	headers = malloc(size);
+
+	printf("\n Offset for Section Entries : %d", size);
+
+	free(headers);
+}
+
 void getHeaders(FILE *f)
 {
 	char *headers;
@@ -276,9 +296,15 @@ void getHeaders(FILE *f)
 	printf("\n Section Header Entry Size : %x", e.sectionHeaderEntrySize);
 	printf("\n No. of Section Header Entries : %d", e.nSectionEntries);
 	printf("\n Section Header Index : %x", e.sectionHeaderIndex);
+	
+	if(e.programHeaderEntrySize)
+		getProgramHeaders(f, e.programHeaderEntrySize * e.nProgramEntries);
+
+	if(e.sectionHeaderEntrySize)
+		getSectionHeaders(f, e.sectionHeaderEntrySize * e.nSectionEntries);
 
 	free(headers);
-}		
+}	
 
 int main(int argc, char **argv)
 {
